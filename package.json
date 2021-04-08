@@ -1,9 +1,8 @@
 {
-  "name": "@someimportantcompany/graphql-keyvalue",
-  "description": "GraphQL support for simple key-value hashes",
+  "name": "graphql-keyvalue",
+  "description": "Standalone GraphQL Scalar type for Key-Value hashes",
   "version": "1.0.0",
   "scripts": {
-    "dev": "nodemon example.js",
     "lint": "eslint .",
     "test": "nyc --reporter=lcov --reporter=text --exclude *.test.js mocha --exit *.test.js",
     "preversion": "npm test",
@@ -13,6 +12,9 @@
   "repository": "https://github.com/someimportantcompany/graphql-keyvalue",
   "bugs": "https://github.com/someimportantcompany/graphql-keyvalue/issues",
   "homepage": "https://github.com/someimportantcompany/graphql-keyvalue#readme",
+  "files": [
+    "./index.js"
+  ],
   "keywords": [
     "graphql",
     "key-value"
