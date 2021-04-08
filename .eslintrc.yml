@@ -275,3 +275,4 @@ overrides:
       func-names: off
       no-console: off
       no-invalid-this: off
+      quotes: off

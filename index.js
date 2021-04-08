@@ -1,8 +1,13 @@
-const { assert } = require('./utils');
 const { GraphQLScalarType } = require('graphql');
 const { Kind, print } = require('graphql/language');
 
 const { hasOwnProperty, toString } = Object.prototype;
+
+function assert(value, err) {
+  if (Boolean(value) === false) {
+    throw err;
+  }
+}
 
 const KeyValueScalar = new GraphQLScalarType({
   name: 'KeyValue',
@@ -21,7 +26,8 @@ const KeyValueScalar = new GraphQLScalarType({
     ];
 
     for (const prop in object) {
-      if (object.hasOwnProperty(prop)) {
+      /* istanbul ignore else */
+      if (hasOwnProperty.call(object, prop)) {
         const type = toString.call(object[prop]);
         assert(validTypes.includes(type), new Error(`Expected value to be a valid type, found "${type}"`), {
           prop,
@@ -45,6 +51,7 @@ const KeyValueScalar = new GraphQLScalarType({
         case INT: case FLOAT: value[field.name.value] = parseFloat(field.value.value); break;
         case NULL: value[field.name.value] = null; break;
         case VARIABLE: value[field.name.value] = variables ? variables[field.value.name.value] : undefined; break;
+        /* istanbul ignore next */
         default: throw new TypeError(`KeyValue cannot represent value: ${print(field.value)}`);
       }
     });
@@ -59,6 +66,7 @@ function flatten(input) {
   const output = {};
 
   for (const key in input) {
+    /* istanbul ignore else */
     if (hasOwnProperty.call(input, key)) {
       const { [key]: value } = input;
       output[key] = [ '[object Array]', '[object Object]' ].includes(toString.call(value))
@@ -79,6 +87,7 @@ function unflatten(input) {
   const output = {};
 
   for (const key in input) {
+    /* istanbul ignore else */
     if (hasOwnProperty.call(input, key)) {
       const { [key]: value } = input;
       output[key] = hasJsonStructure(value) ? JSON.parse(value) : value;
