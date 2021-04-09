@@ -20,9 +20,8 @@ const KeyValueScalar = new GraphQLScalarType({
       '[object Number]',
       '[object Boolean]',
       '[object Date]',
-      '[object Array]',
-      '[object Object]',
       '[object Null]',
+      '[object Undefined]',
     ];
 
     for (const prop in object) {
@@ -98,7 +97,7 @@ function unflatten(input) {
 }
 
 module.exports = {
-  KeyValueScalar,
+  KeyValue: KeyValueScalar,
   // eslint-disable-next-line quotes
   typeDefs: /* GraphQL */`scalar KeyValue`,
   resolvers: { KeyValue: KeyValueScalar },

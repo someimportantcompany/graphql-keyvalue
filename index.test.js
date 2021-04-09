@@ -51,28 +51,21 @@ describe('graphql-keyvalue', () => {
     });
 
     async function query({ query: source, variables: variableValues }) {
-      const { data, errors } = await graphql({
+      return JSON.parse(JSON.stringify(await graphql({
         schema,
         source,
         variableValues,
-      });
-
-      if (Array.isArray(errors) && errors.length) {
-        errors.forEach(err => console.error(err));
-        throw new Error('GraphQL error');
-      }
-
-      return JSON.parse(JSON.stringify(data));
+      })));
     }
 
     before(async () => {
       assert(typeof keyValueTypeDefs === 'string', 'Expected keyValueTypeDefs to be a string');
 
-      const data1 = await query({ query: /* GraphQL */`query { ping }` });
-      assert.deepStrictEqual(data1, { ping: 'pong' }, 'Failed to hit the { ping } query');
+      const result1 = await query({ query: /* GraphQL */`query { ping }` });
+      assert.deepStrictEqual(result1, { data: { ping: 'pong' } }, 'Failed to hit the { ping } query');
 
-      const data2 = await query({ query: /* GraphQL */`mutation { ping }` });
-      assert.deepStrictEqual(data2, { ping: 'pong' }, 'Failed to hit the { ping } mutation');
+      const result2 = await query({ query: /* GraphQL */`mutation { ping }` });
+      assert.deepStrictEqual(result2, { data: { ping: 'pong' } }, 'Failed to hit the { ping } query');
     });
 
     it('should hit the { data } query', async () => {
@@ -85,11 +78,13 @@ describe('graphql-keyvalue', () => {
       });
       assert.deepStrictEqual(result, {
         data: {
-          data: '{"hello":"world"}',
-          quote: 'Wait a minute Doc, are you telling me you built a time machine... out of a Delorean? 🚗',
-          answerToLifeUniverseEtc: 42,
-          'this statement is false': true,
-          createdAt: createdAt.toISOString(),
+          data: {
+            data: '{"hello":"world"}',
+            quote: 'Wait a minute Doc, are you telling me you built a time machine... out of a Delorean? 🚗',
+            answerToLifeUniverseEtc: 42,
+            'this statement is false': true,
+            createdAt: createdAt.toISOString(),
+          },
         },
       });
     });
@@ -104,11 +99,13 @@ describe('graphql-keyvalue', () => {
       });
       assert.deepStrictEqual(result, {
         data: {
-          data: '{"hello":"world"}',
-          quote: 'These are not the droids you are looking for, move along 👋',
-          answerToLifeUniverseEtc: 42,
-          'this statement is false': true,
-          createdAt: createdAt.toISOString(),
+          data: {
+            data: '{"hello":"world"}',
+            quote: 'These are not the droids you are looking for, move along 👋',
+            answerToLifeUniverseEtc: 42,
+            'this statement is false': true,
+            createdAt: createdAt.toISOString(),
+          },
         },
       });
     });
@@ -132,17 +129,19 @@ describe('graphql-keyvalue', () => {
       });
       assert.deepStrictEqual(result, {
         data: {
-          data: JSON.stringify({
-            somethingString: 'Words win wars',
-            somethingNumber: 42,
-            somethingBool: false,
-            somethingNull: null,
-            somethingVar: 'somethingValue',
-          }),
-          quote: 'These are not the droids you are looking for, move along 👋',
-          answerToLifeUniverseEtc: 42,
-          'this statement is false': true,
-          createdAt: createdAt.toISOString(),
+          data: {
+            data: JSON.stringify({
+              somethingString: 'Words win wars',
+              somethingNumber: 42,
+              somethingBool: false,
+              somethingNull: null,
+              somethingVar: 'somethingValue',
+            }),
+            quote: 'These are not the droids you are looking for, move along 👋',
+            answerToLifeUniverseEtc: 42,
+            'this statement is false': true,
+            createdAt: createdAt.toISOString(),
+          },
         },
       });
     });
@@ -167,11 +166,44 @@ describe('graphql-keyvalue', () => {
       });
       assert.deepStrictEqual(result, {
         data: {
-          data: JSON.stringify(variable),
-          quote: 'These are not the droids you are looking for, move along 👋',
-          answerToLifeUniverseEtc: 42,
-          'this statement is false': true,
-          createdAt: createdAt.toISOString(),
+          data: {
+            data: JSON.stringify(variable),
+            quote: 'These are not the droids you are looking for, move along 👋',
+            answerToLifeUniverseEtc: 42,
+            'this statement is false': true,
+            createdAt: createdAt.toISOString(),
+          },
+        },
+      });
+    });
+
+    it('should throw an error the { data } mutation with a variable', async () => {
+      const variable = {
+        quote: 'These are not the droids you are looking for, move along 👋',
+        answerToLifeUniverseEtc: 42,
+        'this statement is false': true,
+        'something something null': null,
+      };
+
+      const result = await query({
+        query: /* GraphQL */`
+          mutation action($data: KeyValue!) {
+            data(data: $data)
+          }
+        `,
+        variables: {
+          data: variable,
+        },
+      });
+      assert.deepStrictEqual(result, {
+        data: {
+          data: {
+            data: JSON.stringify(variable),
+            quote: 'These are not the droids you are looking for, move along 👋',
+            answerToLifeUniverseEtc: 42,
+            'this statement is false': true,
+            createdAt: createdAt.toISOString(),
+          },
         },
       });
     });
