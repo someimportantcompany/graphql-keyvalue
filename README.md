@@ -10,7 +10,6 @@ Standalone GraphQL Scalar type for Key-Value hashes in JavaScript.
 type User {
   id: ID!
   name: String!
-  email: String!
   state: KeyValue!
 }
 
@@ -128,9 +127,33 @@ const server = new ApolloServer({
 });
 ```
 
-## Usage
+## Usage
 
-Once setup, you can send & receive simple key-value objects in GraphQL.
+Once the type definition & resolver is configured, you can send & receive simple key-value objects in GraphQL.
+
+```graphql
+query {
+  user(id: "1") {
+    id
+    name
+    state
+  }
+}
+```
+```json
+{
+  "data": {
+    "user": {
+      "id": "1",
+      "name": "jdrydn",
+      "state": {
+        "signedInWith": "APPLE",
+        "finishedOnboarding": true
+      }
+    }
+  }
+}
+```
 
 ```graphql
 mutation {
@@ -148,11 +171,13 @@ mutation {
 }
 ```
 
-Why only one-level deep?
+## FAQs
+
+### Why only one-level deep?
 
 One of the benefits of GraphQL is the strictly typed schema that is produced. This isn't trying to defy the GraphQL schema, merely extend it to cover more use-cases. For example: API credentials - which can vary in fields greatly. This scalar would allow you to expose these credentials without actually requiring you to define each field of the credentials object.
 
-## Common Errors
+### Common Errors
 
 - Trying to send/receive a JSON object/array will throw an error.
 
