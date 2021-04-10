@@ -177,12 +177,13 @@ describe('graphql-keyvalue', () => {
       });
     });
 
-    it('should throw an error the { data } mutation with a variable', async () => {
+    it('should throw an error if the { data } mutation has a JSON object', async () => {
       const variable = {
         quote: 'These are not the droids you are looking for, move along 👋',
         answerToLifeUniverseEtc: 42,
         'this statement is false': true,
         'something something null': null,
+        invalidObject: { hello: 'world' },
       };
 
       const result = await query({
@@ -196,15 +197,41 @@ describe('graphql-keyvalue', () => {
         },
       });
       assert.deepStrictEqual(result, {
-        data: {
-          data: {
-            data: JSON.stringify(variable),
-            quote: 'These are not the droids you are looking for, move along 👋',
-            answerToLifeUniverseEtc: 42,
-            'this statement is false': true,
-            createdAt: createdAt.toISOString(),
-          },
+        errors: [
+          {
+            message: 'Variable "$data" got invalid value { quote: "These are not the droids you are looking for, move along 👋", answerToLifeUniverseEtc: 42, this statement is false: true, something something null: null, invalidObject: { hello: "world" } }; Expected type KeyValue. Expected "invalidObject" to be a valid type, found "[object Object]"',
+            locations: [ { column: 27, line: 2 } ]
+          }
+        ],
+      });
+    });
+
+    it('should throw an error if the { data } mutation has a JSON array', async () => {
+      const variable = {
+        quote: 'These are not the droids you are looking for, move along 👋',
+        answerToLifeUniverseEtc: 42,
+        'this statement is false': true,
+        'something something null': null,
+        invalidArray: [ { hello: 'world' } ],
+      };
+
+      const result = await query({
+        query: /* GraphQL */`
+          mutation action($data: KeyValue!) {
+            data(data: $data)
+          }
+        `,
+        variables: {
+          data: variable,
         },
+      });
+      assert.deepStrictEqual(result, {
+        errors: [
+          {
+            message: 'Variable "$data" got invalid value { quote: "These are not the droids you are looking for, move along 👋", answerToLifeUniverseEtc: 42, this statement is false: true, something something null: null, invalidArray: [[Object]] }; Expected type KeyValue. Expected "invalidArray" to be a valid type, found "[object Array]"',
+            locations: [ { column: 27, line: 2 } ]
+          }
+        ],
       });
     });
   });

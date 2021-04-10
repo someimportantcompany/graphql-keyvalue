@@ -28,7 +28,7 @@ const KeyValueScalar = new GraphQLScalarType({
       /* istanbul ignore else */
       if (hasOwnProperty.call(object, prop)) {
         const type = toString.call(object[prop]);
-        assert(validTypes.includes(type), new Error(`Expected value to be a valid type, found "${type}"`), {
+        assert(validTypes.includes(type), new Error(`Expected "${prop}" to be a valid type, found "${type}"`), {
           prop,
           type,
           value: JSON.stringify(object[prop]),
