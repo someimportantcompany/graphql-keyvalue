@@ -25,7 +25,7 @@ extend type Mutation {
 ## Install
 
 ```
-$ npm install --save graphql-keyvalue
+$ npm install --save graphql graphql-keyvalue
 ```
 
 From your codebase, you can either use predefined items (type definition & resolver) directly in your project or define the scalar yourself & include the scalar instance in your resolvers.
@@ -65,7 +65,9 @@ const resolvers = {
       const user = await getUser(id);
       assert(user && user.id, 'User not found');
 
+      // Merge in the user state
       user.state = { ...user.state, ...state };
+
       await setUser(id, user);
       return user.state;
     },
@@ -100,6 +102,7 @@ const typeDefs = gql`
     updateUserState(id: ID!, state: KeyValue!) KeyValue!
   }
 
+  # @NOTE You must define the scalar yourself
   scalar KeyValue
 `;
 
@@ -115,7 +118,9 @@ const resolvers = {
       const user = await getUser(id);
       assert(user && user.id, 'User not found');
 
+      // Merge in the user state
       user.state = { ...user.state, ...state };
+
       await setUser(id, user);
       return user.state;
     },
@@ -136,7 +141,7 @@ Once the type definition & resolver is configured, you can send & receive simple
 ### Query
 
 ```graphql
-query {
+query GetUser {
   user(id: "1") {
     id
     name
@@ -162,7 +167,7 @@ query {
 ### Mutation
 
 ```graphql
-mutation {
+mutation UpdateUser {
   updateUserState(id: "1", state: { "finishedOnboarding": true })
 }
 ```
