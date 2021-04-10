@@ -28,7 +28,9 @@ extend type Mutation {
 $ npm install --save graphql-keyvalue
 ```
 
-From your codebase, you can either use predefined type definitions & resolvers directly in your project, for example using [`makeExecutableSchema`](https://npm.im/graphql-tools):
+From your codebase, you can either use predefined items (type definition & resolver) directly in your project or define the scalar yourself & include the scalar instance in your resolvers.
+
+The following example uses [`graphql-tools`](https://npm.im/graphql-tools) & the predefined items:
 
 ```javascript
 const assert = require('assert');
@@ -76,7 +78,7 @@ const schema = makeExecutableSchema({
 });
 ```
 
-Or define the `scalar` yourself & include this resolver in your big list of resolvers, for example using `apollo-server`:
+Whereas this example uses [`apollo-server`](https://npm.im/apollo-server) & includes the scalar instance `KeyValue` in its resolvers:
 
 ```javascript
 const { ApolloServer, gql } = require('apollo-server');
