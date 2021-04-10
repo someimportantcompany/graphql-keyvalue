@@ -8,12 +8,12 @@
     "preversion": "npm test",
     "postversion": "git push && git push --tags"
   },
-  "main": "index.js",
+  "main": "keyvalue.js",
   "repository": "https://github.com/someimportantcompany/graphql-keyvalue",
   "bugs": "https://github.com/someimportantcompany/graphql-keyvalue/issues",
   "homepage": "https://github.com/someimportantcompany/graphql-keyvalue#readme",
   "files": [
-    "./index.js"
+    "./keyvalue.js"
   ],
   "keywords": [
     "graphql",

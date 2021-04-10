@@ -129,7 +129,9 @@ const server = new ApolloServer({
 
 ## Usage
 
-Once the type definition & resolver is configured, you can send & receive simple key-value objects in GraphQL.
+Once the type definition & resolver is configured, you can send & receive simple key-value objects in GraphQL in both queries & mutations.
+
+### Query
 
 ```graphql
 query {
@@ -155,6 +157,8 @@ query {
 }
 ```
 
+### Mutation
+
 ```graphql
 mutation {
   updateUserState(id: "1", state: { "finishedOnboarding": true })
@@ -171,16 +175,9 @@ mutation {
 }
 ```
 
-## FAQs
+## Notes
 
-### Why only one-level deep?
-
-One of the benefits of GraphQL is the strictly typed schema that is produced. This isn't trying to defy the GraphQL schema, merely extend it to cover more use-cases. For example: API credentials - which can vary in fields greatly. This scalar would allow you to expose these credentials without actually requiring you to define each field of the credentials object.
-
-### Common Errors
-
+- The scalar will pass an object for input values & expects an object to be passed for output values.
 - Trying to send/receive a JSON object/array will throw an error.
-
-Alternatives:
-
-- [graphql-type-json](https://npmjs.im/graphql-type-json)
+- **Why only one-level deep?** One of the benefits of GraphQL is the strictly typed schema that is produced. This isn't trying to defy the GraphQL schema, merely extend it to cover more use-cases.
+- After more than one level? Check out [graphql-type-json](https://npmjs.im/graphql-type-json).
