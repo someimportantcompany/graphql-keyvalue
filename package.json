@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "scripts": {
     "lint": "eslint .",
-    "test": "nyc --reporter=lcov --reporter=text --exclude *.test.js mocha --exit *.test.js",
+    "test": "nyc --reporter=lcov --reporter=text --exclude *.test.js mocha ./*.test.js",
     "preversion": "npm test",
     "postversion": "git push && git push --tags"
   },

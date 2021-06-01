@@ -1,7 +1,7 @@
 const assert = require('assert');
 
 describe('graphql-keyvalue', () => {
-  const graphqlKeyValue = require('./');
+  const graphqlKeyValue = require('graphql-keyvalue');
 
   describe('scalar', () => {
     const { graphql } = require('graphql');
