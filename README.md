@@ -2,7 +2,7 @@
 
 [![NPM](https://badge.fury.io/js/graphql-keyvalue.svg)](https://npm.im/graphql-keyvalue)
 [![CI](https://github.com/someimportantcompany/graphql-keyvalue/actions/workflows/ci.yml/badge.svg)](https://github.com/someimportantcompany/graphql-keyvalue/actions/workflows/ci.yml)
-<!-- [![Coverage](https://coveralls.io/repos/github/someimportantcompany/graphql-keyvalue/badge.svg?branch=master)](https://coveralls.io/github/someimportantcompany/graphql-keyvalue?branch=master) -->
+[![Coverage](https://coveralls.io/repos/github/someimportantcompany/graphql-keyvalue/badge.svg)](https://coveralls.io/github/someimportantcompany/graphql-keyvalue)
 
 Standalone GraphQL Scalar type for Key-Value hashes in JavaScript.
 
@@ -188,3 +188,4 @@ mutation UpdateUser {
 - Trying to send/receive a JSON object/array will throw an error.
 - **Why only one-level deep?** One of the benefits of GraphQL is the strictly typed schema that is produced. This isn't trying to defy the GraphQL schema, merely extend it to cover more use-cases.
 - After more than one level? Check out [graphql-type-json](https://npmjs.im/graphql-type-json).
+- Any questions or suggestions please [open an issue](https://github.com/someimportantcompany/graphql-keyvalue/issues).
