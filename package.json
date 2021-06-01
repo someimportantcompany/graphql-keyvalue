@@ -1,7 +1,7 @@
 {
   "name": "graphql-keyvalue",
   "description": "Standalone GraphQL Scalar type for Key-Value hashes",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "scripts": {
     "lint": "eslint .",
     "test": "nyc --reporter=lcov --reporter=text --exclude *.test.js mocha ./*.test.js",
